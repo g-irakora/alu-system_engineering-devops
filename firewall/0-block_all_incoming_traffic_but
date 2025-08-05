@@ -1,17 +1,23 @@
-#!/usr/bin/env bash
-# Configures UFW to allow only ports 22, 80, 443 and deny all other incoming traffic
+echo -e "Updating packages...\n"
 
-# Install ufw if not already installed
+# Update package list
 sudo apt-get update
+
+echo -e "Installing UFW...\n"
+
 sudo apt-get install -y ufw
 
-# Set default policy to deny all incoming traffic
+echo -e "Configuring UFW...\n"
+
 sudo ufw default deny incoming
+sudo ufw default allow outgoing
 
-# Allow essential ports (TCP)
-sudo ufw allow 22/tcp
-sudo ufw allow 80/tcp
-sudo ufw allow 443/tcp
+# Allow specific ports
+sudo ufw allow 22
+sudo ufw allow 80
+sudo ufw allow 443
 
-# Enable UFW (force yes)
-sudo ufw --force enable
+# Enable UFW
+sudo ufw enable
+
+echo -e "Process Completed.\n"

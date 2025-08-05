@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
-# Configures Nginx server with a 301 redirect
+# Script that configures a new Ubuntu machine with the following requirements:
 
-apt-get update
-apt-get install -y nginx
-echo "Holberton School" > /var/www/html/index.html
-redirect_config="server {\n\tlisten 80 default_server;\n\tlisten [::]:80 default_server;\n\troot /var/www/html;\n\tindex index.html index.htm index.nginx-debian.html;\n\tserver_name _;\n\n\tlocation /redirect_me {\n\t\treturn 301 https://www.youtube.com/watch?v=7U_fFy9vOyY;\n\t}\n\n\tlocation / {\n\t\ttry_files \$uri \$uri/ =404;\n\t}\n}"
-echo -e "$redirect_config" > /etc/nginx/sites-available/default
-service nginx restart
-exit 0
+sudo apt-get update
+sudo apt-get -y install nginx
+sudo ufw allow 'Nginx HTTP'
+echo "This is shyaka from Holberton School :)" | sudo tee /var/www/html/index.html > /dev/null
+
+string_for_replacement="server_name _;\n\trewrite ^\/redirect_me https:\/\/www.github.com\/aime-shyaka permanent;"
+sudo sed -i "s/server_name _;/$string_for_replacement/" /etc/nginx/sites-enabled/default
+
+sudo service nginx restart
